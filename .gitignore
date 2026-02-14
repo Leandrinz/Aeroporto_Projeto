@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+env/
+
+# Configurações e Senhas (MySQL)
+.env
+*.log
+
+# IDEs
+.vscode/
+.idea/
