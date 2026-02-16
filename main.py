@@ -1,4 +1,5 @@
 from Funções_Organização import *
+from Funções_do_Banco_de_Dados import *
 
 while True:
     opcao = menu()
@@ -24,7 +25,7 @@ while True:
                     conn.close()
             
         case 2: 
-            # Ver informações personalizadas dos passageiros
+            menu_opcao_2()
             pass
         case 3:
             # Análise da lista de passageiros e gerar lista com passageiros irregulares e suas situações (Tráfico, isenção de impostos)
