@@ -26,10 +26,8 @@ while True:
             
         case 2: 
             menu_opcao_2()
-            pass
         case 3:
-            # Análise da lista de passageiros e gerar lista com passageiros irregulares e suas situações (Tráfico, isenção de impostos)
-            pass
+            menu_opcao_3()
         case 4:
             # Adicionar lista e informações dos passageiros (Adicionar novo banco de dados)
             pass
