@@ -31,3 +31,7 @@ while True:
         case 4:
             # Adicionar lista e informações dos passageiros (Adicionar novo banco de dados)
             pass
+        case 5:
+            break
+
+print("Programa Finalzado...")

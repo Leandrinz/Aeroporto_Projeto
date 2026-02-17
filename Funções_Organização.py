@@ -10,6 +10,7 @@ def menu():
     print("2 - Ver informações personalizadas dos passageiros")
     print("3 - Ver Passageiros Irregulares")
     print("4 - Adicionar lista e informações dos passageiros")
+    print("5 - Sair do Programa")
     print("")
     opcao = int(input("Digite sua Opção: "))
     linha()
