@@ -1,9 +1,35 @@
 from Funções_Organização import *
 
-def menu_opcao_2():
+def menu_opcao_1():
+    coon = conectar()
+    cursor = coon.cursor()
+
+    cursor.execute("SHOW TABLES")
+
+    tabelas = cursor.fetchall()
+
+    print("--- TABELAS EXISTENTES ---")
+    if not tabelas:
+        print("Nenhuma tabela encontrada!")
+    else:
+        print(f"{'ID':<4} | {'TABELA':<12}")
+        for i, tabela in enumerate(tabelas, start=1):
+            print(f"{i:<4} | {tabela[0]:<12}")
+        
+        tabela_desejada = int(input("\nDigite o ID da tabela desejada: "))
+
+        for i, tabela in enumerate(tabelas, start=1):
+            if (i == tabela_desejada):
+                nome_tabela_desejada = tabela[0]
+                print(f"Tabela Escolhida -> {nome_tabela_desejada}")
+                break
+    return nome_tabela_desejada
+        
+
+def menu_opcao_3(nome_tabela_escolhida):
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("SELECT id, nome FROM pessoas")
+    cursor.execute(f"SELECT id, nome FROM {nome_tabela_escolhida}")
     resultado = cursor.fetchall()
 
     print(f"{'ID':<4} | {'Nome':<12}")
@@ -13,19 +39,19 @@ def menu_opcao_2():
 
     passageiro_escolhido = int(input("Digite o id do Passageiro Escolhido: "))
 
-    cursor.execute(f"Select * from pessoas where id = {passageiro_escolhido}")
+    cursor.execute(f"Select * from {nome_tabela_escolhida} where id = {passageiro_escolhido}")
     resultado = cursor.fetchall()
 
-    print(f"{'ID':<4} | {'CPF':<20} | {'NOME':<20} | {'Sexo':<5} | {'Nascimento'} | {'Estado Civil':<14} |{'Profissão':<12} | {'Nacionalidade':<12} | {'Malas':<4} | {'Possui_Drogas':<4}")
+    print(f"{'ID':<4} | {'CPF':<20} | {'NOME':<20} | {'Sexo':<5} | {'Nascimento'} | {'Estado Civil':<14} | {'Profissão':<12} | {'Nacionalidade':<12} | {'Malas':<4} | {'Possui_Drogas':<4}")
 
     for linha in resultado:
         for linha in resultado:
-            print(f"{linha[0]:<4} | {linha[1]:<20} | {linha[2]:<20} | {linha[3]:<5} | {linha[4]} | {linha[5]:<14} | {linha[6]:<12} | {linha[7]:<12} | {linha[8]:<4} | {linha[9]:<4}")
+            print(f"{linha[0]:<4} | {linha[1]:<20} | {linha[2]:<20} | {linha[3]:<5} | {linha[4]} | {linha[5]:<14} | {linha[6]:<12} | {linha[7]:<12}  | {linha[8]:<4}  | {linha[9]:<4}")
 
-def menu_opcao_3():
+def menu_opcao_4(nome_tabela_escolhida):
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("Select * from pessoas where Possui_Drogas = TRUE")
+    cursor.execute(f"Select * from {nome_tabela_escolhida} where Possui_Drogas = TRUE")
     resultado = cursor.fetchall()
 
     print(f"{'ID':<4} | {'CPF':<20} | {'NOME':<20} | {'Sexo':<5} | {'Nascimento'} | {'Estado Civil':<14} |{'Profissão':<12} | {'Nacionalidade':<12} | {'Malas':<4} | {'Possui_Drogas':<4}")
@@ -36,11 +62,36 @@ def menu_opcao_3():
     print("IRREGULARIDADE: TRÁFICO INTERNACIONAL DE DROGAS!!!")
 
 
-def menu_opcao_4():
+def menu_opcao_5():
     conn = conectar()
     cursor = conn.cursor()
-    # 1 - Pedir o nome da tabela
-    nome_tabela = str(input("Informe o nome da lista: "))
+    
+    cursor.execute("SHOW TABLES")
+
+    tabelas = cursor.fetchall()
+
+    print("--- TABELAS EXISTENTES ---")
+    if not tabelas:
+        print("Nenhuma tabela encontrada!")
+    else:
+        print(f"{'ID':<4} | {'TABELA':<12}")
+        print(f"{'0':<4} | {'Criar nova tabela':<12}")
+        for i, tabela in enumerate(tabelas, start=1):
+            print(f"{i:<4} | {tabela[0]:<12}")
+        
+        tabela_desejada = int(input("\nDigite o ID da tabela desejada ou 0 Para criar uma nova tabela: "))
+
+        for i, tabela in enumerate(tabelas, start=1):
+            if (tabela_desejada == 0):
+                break
+            if (i == tabela_desejada):
+                nome_tabela_desejada = tabela[0]
+                print(f"Tabela Escolhida -> {nome_tabela_desejada}")
+                break
+
+    if (tabela_desejada == 0):
+        # 1 - Pedir o nome da tabela
+        nome_tabela = str(input("Informe o nome da lista: "))
 
     # 2 - Pedir quantas pessoas serão adicionadas nessa tabela
     quantidade_pessoas = int(input("Quantas pessoas serão adicionadas: "))
@@ -65,7 +116,7 @@ def menu_opcao_4():
         
         Quantidade_de_malas = int(input(f"Quantidade de malas de {nome}: "))
         
-        Possui_Drogas = int(input(f"{nome} possui drogas?\n 1 - Sim \n 2 - Não\nResposta: "))
+        Possui_Drogas = int(input(f"{nome} possui drogas?\n 1 - Sim \n 0 - Não\nResposta: "))
 
 
         cursor.execute(f"""Create TABLE if not exists  {nome_tabela} 
