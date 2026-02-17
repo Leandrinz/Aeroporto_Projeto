@@ -29,8 +29,7 @@ while True:
         case 3:
             menu_opcao_3()
         case 4:
-            # Adicionar lista e informações dos passageiros (Adicionar novo banco de dados)
-            pass
+            menu_opcao_4()
         case 5:
             break
 
