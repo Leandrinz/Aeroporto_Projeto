@@ -15,8 +15,16 @@ def menu_opcao_1():
         print(f"{'ID':<4} | {'TABELA':<12}")
         for i, tabela in enumerate(tabelas, start=1):
             print(f"{i:<4} | {tabela[0]:<12}")
-        
-        tabela_desejada = int(input("\nDigite o ID da tabela desejada: "))
+        while True:
+            try:
+                tabela_desejada = int(input("\nDigite o ID da tabela desejada: "))
+
+                if 1 <= tabela_desejada <= i:
+                    break
+                else:
+                    print(f"Erro, escolha um número entre 1 e {i}.")
+            except ValueError:
+                mensagem_de_erro_valor_nao_inteiro()
 
         for i, tabela in enumerate(tabelas, start=1):
             if (i == tabela_desejada):
@@ -31,13 +39,23 @@ def menu_opcao_3(nome_tabela_escolhida):
     cursor = conn.cursor()
     cursor.execute(f"SELECT id, nome FROM {nome_tabela_escolhida}")
     resultado = cursor.fetchall()
+    total_linhas = len(resultado)
 
     print(f"{'ID':<4} | {'Nome':<12}")
 
     for linha in resultado:
         print(f"{linha[0]:<4} | {linha[1]:<12}")
 
-    passageiro_escolhido = int(input("Digite o id do Passageiro Escolhido: "))
+    while True:
+        try:
+            passageiro_escolhido = int(input("Digite o id do Passageiro Escolhido: "))
+
+            if 1 <= passageiro_escolhido <= total_linhas:
+                break
+            else:
+                mensagem_de_erro_por_limite(1, total_linhas)
+        except ValueError:
+            mensagem_de_erro_valor_nao_inteiro()
 
     cursor.execute(f"Select * from {nome_tabela_escolhida} where id = {passageiro_escolhido}")
     resultado = cursor.fetchall()
@@ -69,7 +87,7 @@ def menu_opcao_5():
     cursor.execute("SHOW TABLES")
 
     tabelas = cursor.fetchall()
-
+    total_linhas = len(tabelas)
     print("--- TABELAS EXISTENTES ---")
     if not tabelas:
         print("Nenhuma tabela encontrada!")
@@ -79,7 +97,15 @@ def menu_opcao_5():
         for i, tabela in enumerate(tabelas, start=1):
             print(f"{i:<4} | {tabela[0]:<12}")
         
-        tabela_desejada = int(input("\nDigite o ID da tabela desejada ou 0 Para criar uma nova tabela: "))
+        while True:
+            try:
+                tabela_desejada = int(input("\nDigite o ID da tabela desejada ou 0 Para criar uma nova tabela: "))
+                if 0 <= tabela_desejada <= total_linhas:
+                    break
+                else:
+                    mensagem_de_erro_por_limite(0, total_linhas)
+            except ValueError:
+                mensagem_de_erro_valor_nao_inteiro()
 
         for i, tabela in enumerate(tabelas, start=1):
             if (tabela_desejada == 0):
@@ -90,21 +116,37 @@ def menu_opcao_5():
                 break
 
     if (tabela_desejada == 0):
-        # 1 - Pedir o nome da tabela
+
         nome_tabela = str(input("Informe o nome da lista: "))
+    else:
+        nome_tabela = nome_tabela_desejada
+    while True:
+        try:
+            quantidade_pessoas = int(input("Quantas pessoas serão adicionadas: "))
+            if quantidade_pessoas >= 1:
+                break
+            else:
+                print("Erro: Digite um valor válido.")
+        except ValueError:
+            mensagem_de_erro_valor_nao_inteiro()
 
-    # 2 - Pedir quantas pessoas serão adicionadas nessa tabela
-    quantidade_pessoas = int(input("Quantas pessoas serão adicionadas: "))
-
-    
-    # 3 - Pedir as informações de cada uma
     
     for contador in range(1, quantidade_pessoas + 1):
-        cpf = int(input("Digite o CPF: "))
-        
+        while True:
+            cpf = input("Digite o CPF (Apenas números): ")
+            if len(cpf) == 11 and cpf.isdigit():
+                break
+            else:
+                print("Erro: O CPF deve conter exatamente 11 números!")
+                
         nome = str(input("Digite o Nome: "))
         
-        Sexo = str(input(f"Sexo de {nome}(M/F): "))
+        while True:
+            Sexo = str(input(f"Sexo de {nome}(M/F): ")).upper()
+            if Sexo in ['M', 'F']:
+                break
+            else:
+                print("Erro: Digite apenas 'M' ou 'F'!!!")
         
         Nascimento = str(input(f"Data de nascimento de {nome} (ex: 2000/05/20): "))
         
@@ -114,9 +156,25 @@ def menu_opcao_5():
         
         Nacionalidade = str(input(f"Nacionalidade de {nome}: "))
         
-        Quantidade_de_malas = int(input(f"Quantidade de malas de {nome}: "))
+        while True:
+            try:
+                Quantidade_de_malas = int(input(f"Quantidade de malas de {nome}: "))
+                if Quantidade_de_malas >= 1:
+                    break
+                else:
+                    print("Erro: Digite um valor válido.")
+            except ValueError:
+                mensagem_de_erro_valor_nao_inteiro()
         
-        Possui_Drogas = int(input(f"{nome} possui drogas?\n 1 - Sim \n 0 - Não\nResposta: "))
+        while True:
+            try:
+                Possui_Drogas = int(input(f"{nome} possui drogas?\n 1 - Sim \n 0 - Não\nResposta: "))
+                if Possui_Drogas in [0, 1]:
+                    break
+                else:
+                    print("Erro: O valor deve ser 1 ou 0")
+            except ValueError:
+                mensagem_de_erro_valor_nao_inteiro()
 
 
         cursor.execute(f"""Create TABLE if not exists  {nome_tabela} 
