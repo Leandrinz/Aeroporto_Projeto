@@ -1,8 +1,9 @@
 from Funções_Organização import *
 
-def menu_opcao_1():
-    coon = conectar()
-    cursor = coon.cursor()
+def menu_opcao_1(conn = None):
+    if conn is None:
+        conn = conectar()
+    cursor = conn.cursor()
 
     cursor.execute("SHOW TABLES")
 
@@ -11,6 +12,7 @@ def menu_opcao_1():
     print("--- TABELAS EXISTENTES ---")
     if not tabelas:
         print("Nenhuma tabela encontrada!")
+        return None
     else:
         print(f"{'ID':<4} | {'TABELA':<12}")
         for i, tabela in enumerate(tabelas, start=1):
@@ -34,12 +36,17 @@ def menu_opcao_1():
     return nome_tabela_desejada
         
 
-def menu_opcao_3(nome_tabela_escolhida):
-    conn = conectar()
+def menu_opcao_3(nome_tabela_escolhida, conn = None):
+    if conn is None:
+        conn = conectar()
     cursor = conn.cursor()
     cursor.execute(f"SELECT id, nome FROM {nome_tabela_escolhida}")
     resultado = cursor.fetchall()
     total_linhas = len(resultado)
+    
+    if total_linhas == 0:
+        print(f"Nenhum registro encontrado. Assegure-se de fazer registros na {nome_tabela_escolhida} antes de buscar informações nela.")
+        return None
 
     print(f"{'ID':<4} | {'Nome':<12}")
 
@@ -66,8 +73,9 @@ def menu_opcao_3(nome_tabela_escolhida):
         for linha in resultado:
             print(f"{linha[0]:<4} | {linha[1]:<20} | {linha[2]:<20} | {linha[3]:<5} | {linha[4]} | {linha[5]:<14} | {linha[6]:<12} | {linha[7]:<12}  | {linha[8]:<4}  | {linha[9]:<4}")
 
-def menu_opcao_4(nome_tabela_escolhida):
-    conn = conectar()
+def menu_opcao_4(nome_tabela_escolhida, conn = None):
+    if conn is None:
+        conn = conectar()
     cursor = conn.cursor()
     cursor.execute(f"Select * from {nome_tabela_escolhida} where Possui_Drogas = TRUE")
     resultado = cursor.fetchall()

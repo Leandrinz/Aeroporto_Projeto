@@ -1,5 +1,5 @@
 from Funções_Organização import *
-from Funções_do_Banco_de_Dados import *
+from funcoes_banco_dados import *
 nome_tabela_escolhida = menu_opcao_1()
 while True:
     opcao = menu(nome_tabela_escolhida)
