@@ -108,3 +108,56 @@ def test_sucesso_menu_opcao_4(usuario_com_droga):
     assert "possui_drogas = true" in chamada_sql.lower()
 
     assert mock_cursor.fetchall.called
+
+
+def test_menu_opcao_4_tabela_vazia():
+    mock_conn = MagicMock()
+    mock_cursor = mock_conn.cursor.return_value
+    mock_cursor.fetchall.return_value = []
+
+    resultado = banco.menu_opcao_4("Passageiros", mock_conn)
+
+    assert resultado == None
+
+
+# 4) Testes menu_opção_5
+
+def test_menu_opcao_5_sucesso(mocker):
+    mock_conn = MagicMock()
+    mock_cursor = mock_conn.cursor.return_value
+    mock_cursor.fetchall.return_value = [('viagens',)]
+
+    mocker.patch('builtins.input', side_effect=['1', '1', '12345678901', 'Ana', 'F', '1995/10/10', 'Solteira', 'Designer', 'Brasil', '1', '0'])
+
+    mocker.patch('builtins.print')
+
+    menu_opcao_5(mock_conn)
+
+    assert mock_conn.commit.called
+
+    args, _ = mock_cursor.execute.call_args
+    assert "Insert into" in args[0]
+
+
+def test_menu_opcao_5_erro_banco(mocker):
+    mock_conn = MagicMock()
+    mock_cursor = mock_conn.cursor.return_value
+    mock_cursor.fetchall.return_value = [('viagens',)]
+
+    mock_cursor.execute.side_effect = [None, None, Exception("Erro de Integridade: CPF duplicado")]
+
+    mocker.patch('builtins.input', side_effect=[
+        '1', '1', '12345678901', 'Ana', 'F', '1995/10/10', 'Solteira', 'Designer', 'Brasil', '1', '0'
+    ])
+
+    with pytest.raises(Exception):
+        menu_opcao_5(mock_conn)
+
+def test_menu_opcao_5_tabela_vazia():
+    mock_conn = MagicMock()
+    mock_cursor = mock_conn.cursor.return_value
+    mock_cursor.fetchall.return_value = []
+
+    resultado = banco.menu_opcao_5(mock_conn)
+
+    assert resultado == None

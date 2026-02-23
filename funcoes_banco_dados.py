@@ -79,6 +79,10 @@ def menu_opcao_4(nome_tabela_escolhida, conn = None):
     cursor = conn.cursor()
     cursor.execute(f"Select * from {nome_tabela_escolhida} where Possui_Drogas = TRUE")
     resultado = cursor.fetchall()
+    total_linhas = len(resultado)
+    if total_linhas == 0:
+        print("Tabela Vazia...")
+        return None
 
     print(f"{'ID':<4} | {'CPF':<20} | {'NOME':<20} | {'Sexo':<5} | {'Nascimento'} | {'Estado Civil':<14} |{'Profissão':<12} | {'Nacionalidade':<12} | {'Malas':<4} | {'Possui_Drogas':<4}")
 
@@ -88,8 +92,9 @@ def menu_opcao_4(nome_tabela_escolhida, conn = None):
     print("IRREGULARIDADE: TRÁFICO INTERNACIONAL DE DROGAS!!!")
 
 
-def menu_opcao_5():
-    conn = conectar()
+def menu_opcao_5(conn = None):
+    if conn is None:
+        conn = conectar()
     cursor = conn.cursor()
     
     cursor.execute("SHOW TABLES")
@@ -97,8 +102,9 @@ def menu_opcao_5():
     tabelas = cursor.fetchall()
     total_linhas = len(tabelas)
     print("--- TABELAS EXISTENTES ---")
-    if not tabelas:
+    if total_linhas == 0:
         print("Nenhuma tabela encontrada!")
+        return None
     else:
         print(f"{'ID':<4} | {'TABELA':<12}")
         print(f"{'0':<4} | {'Criar nova tabela':<12}")
@@ -204,4 +210,4 @@ def menu_opcao_5():
         conn.commit()
 
     cursor.close()
-    conn.close()
+    
