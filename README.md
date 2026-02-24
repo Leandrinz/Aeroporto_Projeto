@@ -36,4 +36,4 @@ O projeto utiliza um padrão de "Loop de Validação Único" para cada entrada:
 - [x] Blindagem de inputs de Sexo (normalização upper/match 'M' ou 'F').
 - [x] Tratamento de exceções `try-except` para todos os campos inteiros (Malas/ID/Drogas).
 - [x] Loop de repetição para permitir múltiplos cadastros em uma única execução.
-- [ ] **Implementação de testes unitários com Pytest (Próxima etapa).**
+- [x] **Implementação de testes unitários com Pytest (Próxima etapa).**
